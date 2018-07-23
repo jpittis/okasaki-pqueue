@@ -48,13 +48,17 @@ deleteMin (Heap ts) =
   where
     getMin :: Ord a => [Tree a] -> (Tree a, [Tree a])
     getMin [t] =  (t, [])
+    getMin (t:ts) =
+      let (minRest, rest) = getMin ts in
+      if node t <= node minRest then (t, ts) else (minRest, t:rest)
 
 meld :: Ord a => Heap a -> Heap a -> Heap a
-meld (Heap ts) (Heap []) = Heap ts
-meld (Heap []) (Heap ts) = Heap ts
 meld (Heap h1) (Heap h2) = Heap $ go h1 h2
   where
     go :: Ord a => [Tree a] -> [Tree a] -> [Tree a]
+    go [] [] = []
+    go ts [] = ts
+    go [] ts = ts
     go (t1:ts1) (t2:ts2)
       | rank t1 < rank t2 = t1 : go ts1 (t2:ts2)
       | rank t2 < rank t1 = t2 : go (t1:ts1) ts2

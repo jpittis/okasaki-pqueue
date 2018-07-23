@@ -34,3 +34,5 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - okasaki-pqueue
+    - hspec
+    - mtl
